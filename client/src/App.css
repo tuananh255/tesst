@@ -1,0 +1,43 @@
+* {
+  text-decoration: none !important;
+}
+.header .ant-select-selector {
+  border-radius: 30px !important;
+  padding: 25px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.ant-select.ant-select-outlined.css-dev-only-do-not-override-m4timi.ant-select-single.ant-select-show-arrow.ant-select-show-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+:where(.css-dev-only-do-not-override-m4timi).ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select,
+:where(.css-dev-only-do-not-override-m4timi).ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select {
+  width: 100%;
+}
+.ant-select-arrow {
+  display: none !important;
+}
+
+.filter .ant-select-selection-item {
+  padding-inline-end: 0px !important;
+}
+.error {
+  font-size: 12px;
+  /* margin-top: 4px; */
+  font-weight: 600;
+  color: red;
+  padding: 0 12px;
+}
+.img_post{
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+  padding: 20px 0;
+  /* height: 100px; */
+}
+  .ant-picker.ant-picker-range.ant-picker-outlined.css-dev-only-do-not-override-m4timi.form-control {
+    display: flex !important;
+    /* align-items: end !important ; */
+  }
