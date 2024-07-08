@@ -363,7 +363,7 @@ const Start = () => {
                   </div>
                 </div>
               )}
-              <Link to="/home">
+              <Link to="/home/giaoluu">
                 <div
                   style={{
                     background: "red",

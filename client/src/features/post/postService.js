@@ -12,7 +12,26 @@ const addPost = async (post) => {
     return res.data;
   }
 };
-
+const getAllPost = async () => {
+  const res = await axios.get(
+    `${base_url}post/all-post`,
+    config
+  );
+  if (res.data) {
+    return res.data;
+  }
+};
+const getPost = async (id) => {
+  const res = await axios.get(
+    `${base_url}post/get-post/${id}`,
+    config
+  );
+  if (res.data) {
+    return res.data;
+  }
+};
 export const postService = {
   addPost,
+  getAllPost,
+  getPost,
 };

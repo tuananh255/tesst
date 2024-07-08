@@ -3,10 +3,15 @@ const asyncHandle = require("express-async-handler");
 
 // create user
 const addPost = async (req, res) => {
+  const { _id } = req.user;
+
   try {
     const newPost =
-      await postModel.create(req.body);
-    newPost.save();
+      await postModel.create({
+        ...req.body,
+        updateBy: _id,
+      });
+
     res.status(201).send({
       newPost: newPost,
       success: true,
@@ -16,7 +21,7 @@ const addPost = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send({
-      message: "Create new post False",
+      message: "Create new post failed",
       success: false,
       error: error,
     });
@@ -26,9 +31,11 @@ const addPost = async (req, res) => {
 // get all users
 const getAllPost = async (req, res) => {
   try {
-    const Posts = new postModel.find();
+    const Posts = await postModel.find(
+      {}
+    );
     res.status(201).send({
-      Posts: Posts,
+      Posts,
       success: true,
       message: "get all successfully",
     });
@@ -47,23 +54,24 @@ const getsignPost = async (
   req,
   res
 ) => {
-  // const { _id } = req.params;
-  // try {
-  //   const getUser =
-  //     await postModel.findById(_id);
-  //   res.status(200).json({
-  //     success: true,
-  //     message:
-  //       "Get user successfully !",
-  //     getUser,
-  //   });
-  // } catch (error) {
-  //   console.log(error);
-  //   res.status(500).send({
-  //     success: false,
-  //     message: "Get user error !",
-  //   });
-  // }
+  const { id } = req.params;
+  try {
+    const getPost = await postModel
+      .findById(id)
+      .populate("updateBy");
+    res.status(200).json({
+      success: true,
+      message:
+        "Get user successfully !",
+      getPost,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Get user error !",
+    });
+  }
 };
 
 // update user

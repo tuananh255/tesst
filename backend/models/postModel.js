@@ -1,5 +1,37 @@
 const mongoose = require("mongoose"); // Erase if already required
 // Declare the Schema of the Mongo model
+const commentSchema =
+  new mongoose.Schema(
+    {
+      content: {
+        type: String,
+        required: true,
+      },
+      postedBy: {
+        type: mongoose.Schema.Types
+          .ObjectId,
+        ref: "User",
+        required: true,
+      },
+      replies: [
+        {
+          content: String,
+          postedBy: {
+            type: mongoose.Schema.Types
+              .ObjectId,
+            ref: "User",
+          },
+          createdAt: {
+            type: Date,
+            default: Date.now,
+          },
+        },
+      ],
+    },
+    {
+      timestamps: true,
+    }
+  );
 var postSchema = new mongoose.Schema(
   {
     location: {
@@ -60,6 +92,23 @@ var postSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    updateBy: {
+      type: mongoose.Schema.Types
+        .ObjectId,
+      ref: "User",
+    },
+    ratings: [
+      {
+        star: Number,
+        comment: String,
+        postedby: {
+          type: mongoose.Schema.Types
+            .ObjectId,
+          ref: "User",
+        },
+      },
+    ],
+    comments: [commentSchema],
   },
   {
     timestamps: true,

@@ -37,6 +37,7 @@ import {
   login,
   register,
 } from "../features/users/userSlice";
+import Login from "./Login";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,6 +49,15 @@ const Header = () => {
       email: Yup.string()
         .email("Email should be valid")
         .required("Yêu cầu nhập Email"),
+      name: Yup.string().required(
+        "Yêu cầu nhập tên"
+      ),
+      mobile: Yup.string().required(
+        "Yêu cầu nhập số điện thoại"
+      ),
+      address: Yup.string().required(
+        "Yêu cầu nhập địa chỉ"
+      ),
       password: Yup.string().required(
         "Yêu cầu nhập mật khẩu"
       ),
@@ -189,11 +199,14 @@ const Header = () => {
   const formik = useFormik({
     initialValues: {
       email: "",
+      name: "",
+      mobile: "",
+      address: "",
       password: "",
     },
     validationSchema: userSchema,
     onSubmit: (values) => {
-      if (modalType == "register") {
+      if (modalType === "register") {
         if (
           values.password === cfpassword
         ) {
@@ -207,12 +220,6 @@ const Header = () => {
             "Mật khẩu không trùng khớp"
           );
         }
-      } else {
-        dispatch(login(values));
-        setTimeout(() => {
-          formik.resetForm();
-          setModalType("");
-        }, 300);
       }
     },
   });
@@ -476,10 +483,6 @@ const Header = () => {
                   </Space>
                 </a>
               </Dropdown>
-              {/* {userState !== null && (
-                <>
-                </>
-              )} */}
               <div
                 ref={
                   dropdownContainerRef
@@ -498,6 +501,9 @@ const Header = () => {
                   zIndex: 10000,
                 }}>
                 <form
+                  style={{
+                    zIndex: 100000000000,
+                  }}
                   onSubmit={
                     formik.handleSubmit
                   }>
@@ -572,6 +578,96 @@ const Header = () => {
                           )}
                       </div>
                       <div className="form-group">
+                        <Input
+                          name="name"
+                          className="p-3 mb-3"
+                          placeholder="Nhập tên"
+                          value={
+                            formik
+                              .values
+                              .name
+                          }
+                          onChange={
+                            formik.handleChange
+                          }
+                          onBlur={
+                            formik.handleBlur
+                          }
+                        />
+                        {formik.errors
+                          .name &&
+                          formik.touched
+                            .name && (
+                            <div className="text-danger">
+                              {
+                                formik
+                                  .errors
+                                  .name
+                              }
+                            </div>
+                          )}
+                      </div>
+                      <div className="form-group">
+                        <Input
+                          name="mobile"
+                          className="p-3 mb-3"
+                          placeholder="Nhập số điện thoại"
+                          value={
+                            formik
+                              .values
+                              .mobile
+                          }
+                          onChange={
+                            formik.handleChange
+                          }
+                          onBlur={
+                            formik.handleBlur
+                          }
+                        />
+                        {formik.errors
+                          .mobile &&
+                          formik.touched
+                            .mobile && (
+                            <div className="text-danger">
+                              {
+                                formik
+                                  .errors
+                                  .mobile
+                              }
+                            </div>
+                          )}
+                      </div>
+                      <div className="form-group">
+                        <Input
+                          name="address"
+                          className="p-3 mb-3"
+                          placeholder="Nhập địa chỉ"
+                          value={
+                            formik
+                              .values
+                              .address
+                          }
+                          onChange={
+                            formik.handleChange
+                          }
+                          onBlur={
+                            formik.handleBlur
+                          }
+                        />
+                        {formik.errors
+                          .address &&
+                          formik.touched
+                            .address && (
+                            <div className="text-danger">
+                              {
+                                formik
+                                  .errors
+                                  .address
+                              }
+                            </div>
+                          )}
+                      </div>
+                      <div className="form-group">
                         <Input.Password
                           name="password"
                           className="p-3 mb-3"
@@ -619,123 +715,29 @@ const Header = () => {
                           }
                         />
                       </div>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        style={{
+                          width: "100%",
+                        }}
+                        className="p-4">
+                        {modalType ===
+                        "register"
+                          ? "Đăng ký"
+                          : "Đăng nhập"}
+                      </Button>
                     </>
                   )}
-                  {modalType ===
-                    "login" && (
-                    <>
-                      <div className="d-flex flex-column justify-content-center align-item-center">
-                        <div
-                          style={{
-                            width:
-                              "100%",
-                            display:
-                              "flex",
-                            justifyContent:
-                              "center",
-                          }}>
-                          <img
-                            src={icon}
-                            width={70}
-                            alt=""
-                          />
-                        </div>
-                        <span className="text-center fs-2 fw-bold mt-2">
-                          Đăng nhập tài
-                          khoản
-                        </span>
-                        <p className="text-center">
-                          Chưa có tài
-                          khoản ?{" "}
-                          <span
-                            style={{
-                              color:
-                                "red",
-                            }}
-                            onClick={() =>
-                              handleMenuClick(
-                                "register"
-                              )
-                            }>
-                            Đăng ký
-                          </span>
-                        </p>
-                      </div>
-                      <div className="form-group">
-                        <Input
-                          name="email"
-                          className="p-3 mb-3"
-                          placeholder="Email"
-                          value={
-                            formik
-                              .values
-                              .email
-                          }
-                          onChange={
-                            formik.handleChange
-                          }
-                          onBlur={
-                            formik.handleBlur
-                          }
-                        />
-                        {formik.errors
-                          .email &&
-                          formik.touched
-                            .email && (
-                            <div className="text-danger">
-                              {
-                                formik
-                                  .errors
-                                  .email
-                              }
-                            </div>
-                          )}
-                      </div>
-                      <div className="form-group">
-                        <Input.Password
-                          name="password"
-                          className="p-3 mb-3"
-                          placeholder="Password"
-                          value={
-                            formik
-                              .values
-                              .password
-                          }
-                          onChange={
-                            formik.handleChange
-                          }
-                          onBlur={
-                            formik.handleBlur
-                          }
-                        />
-                        {formik.errors
-                          .password &&
-                          formik.touched
-                            .password && (
-                            <div className="text-danger">
-                              {
-                                formik
-                                  .errors
-                                  .password
-                              }
-                            </div>
-                          )}
-                      </div>
-                    </>
-                  )}
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    style={{
-                      width: "100%",
-                    }}
-                    className="p-4">
-                    {modalType ===
-                    "register"
-                      ? "Đăng ký"
-                      : "Đăng nhập"}
-                  </Button>
                 </form>
+                {modalType ===
+                  "login" && (
+                  <Login
+                    handleMenuClick={
+                      handleMenuClick
+                    }
+                  />
+                )}
               </Modal>
             </div>
           </div>

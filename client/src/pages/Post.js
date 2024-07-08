@@ -133,10 +133,10 @@ const Post = () => {
       location: "",
       title: "",
       description: "",
-      countct: "",
-      namnu: "",
-      minTrinhDo: "",
-      maxTrinhDo: "",
+      countct: null,
+      namnu: null,
+      minTrinhDo: null,
+      maxTrinhDo: null,
       dateStart: {
         date: null,
         timeStart: null,
@@ -147,7 +147,7 @@ const Post = () => {
       contact: "",
       images: "",
       laplai: "",
-      type: "",
+      type: null,
     },
     validationSchema: userSchema,
     onSubmit: (values) => {
@@ -159,6 +159,10 @@ const Post = () => {
         toast.success(
           "Đăng bài thành công 😆"
         );
+        setTimeout(() => {
+          formik.resetForm();
+          dispatch(resetImages());
+        }, 300);
       }
     },
   });
@@ -273,6 +277,7 @@ const Post = () => {
                       formik.values
                         .countct
                     }
+                    placeholder="Số lượng cần tuyển"
                     // defaultValue={1}
                     onChange={(
                       value
@@ -539,7 +544,7 @@ const Post = () => {
                     )}
                 </div>
                 <Select
-                  placeholder="Cả nam và nữ"
+                  placeholder="Phân loại"
                   value={
                     formik.values.type
                   }
