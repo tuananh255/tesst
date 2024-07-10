@@ -11,12 +11,18 @@ const {
   getAllPost,
   deletesignPost,
   updatePost,
+  rating,
 } = require("../controllers/postController.js");
 
 route.post(
   "/add-post",
   authMiddleware,
   addPost
+);
+route.post(
+  "/rating-post/:id",
+  authMiddleware,
+  rating
 );
 route.get("/all-post", getAllPost);
 route.get(
@@ -27,7 +33,7 @@ route.get(
 );
 
 route.delete(
-  "/delete-user/:_id",
+  "/delete-post/:id",
   deletesignPost
 );
 

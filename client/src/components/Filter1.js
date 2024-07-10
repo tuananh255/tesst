@@ -1,215 +1,63 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-} from "react";
-import { Select } from "antd";
-import { FaRegUserCircle } from "react-icons/fa";
+import React, { useState } from "react";
+import { Button, Select } from "antd";
+import { useDispatch } from "react-redux";
 import {
-  useDispatch,
-  useSelector,
-} from "react-redux";
-import { getAllPost } from "../features/post/postSlice";
+  filterProduct,
+  resetProduct,
+} from "../features/product/productSlice";
+
 const Filter1 = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getAllPost());
-  }, []);
-  const postAll = useSelector(
-    (state) => state.post.post.Post
-  );
-  const [
-    selectedCity,
-    setSelectedCity,
-  ] = useState(null);
-  const data = [
-    // {
-    //   id: "1",
-    //   type: "traodoi",
-    //   image:
-    //     "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-    //   price: "70.000 - 100.000",
-    //   name: "Tuyển giao lưu 1",
-    //   address:
-    //     "Sân THCS Thanh Xuân Nam - Cuối ngõ 214 Nguyễn Xiển, P. Thanh Xuân Nam, Q. Thanh Xuân, Hà Nội",
-    //   city: "Hà Nội",
-    //   calendarNow:
-    //     "02/07/2024, 19:30 - 19:30",
-    //   calendar:
-    //     "Lặp lại hàng tuần (T3, T5, CN)",
-    //   apply: "3 người (Nam)",
-    //   level: "TBK",
-    //   hirePrice: "80.000",
-    //   description:
-    //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-    //   user: {
-    //     image: <FaRegUserCircle />,
-    //     username: "Nguyen Van A",
-    //     numberphone: "098765432",
-    //     link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-    //   },
-    // },
-    // {
-    //   id: "2",
-    //   type: "sandau",
-    //   image:
-    //     "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-    //   price: "100.000",
-    //   name: "Tuyển giao lưu 2",
-    //   address:
-    //     "Sân THCS Thanh Xuân Nam - Đà Nẵng",
-    //   city: "Đà Nẵng",
-    //   calendarNow:
-    //     "02/07/2024, 19:30 - 19:30",
-    //   calendar:
-    //     "Lặp lại hàng tuần (T3, T5, CN)",
-    //   apply: "1 người (Nữ)",
-    //   level: "TBK",
-    //   hirePrice: "80.000",
-    //   description:
-    //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-    //   user: {
-    //     image: <FaRegUserCircle />,
-    //     username: "Nguyen Van B",
-    //     numberphone: "098765432",
-    //     link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-    //   },
-    // },
-    // {
-    //   id: "3",
-    //   type: "giaoluu",
-    //   image:
-    //     "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-    //   price: "500.000",
-    //   name: "Tuyển giao lưu 3",
-    //   address:
-    //     "Sân THCS Thanh Xuân Nam - Cuối ngõ 214 Nguyễn Xiển, Sài Gòn",
-    //   city: "Đà Nẵng",
-    //   calendarNow:
-    //     "02/07/2024, 19:30 - 19:30",
-    //   calendar:
-    //     "Lặp lại hàng tuần (T3, T5, CN)",
-    //   apply: "3 người (Nam)",
-    //   level: "TBK",
-    //   hirePrice: "80.000",
-    //   description:
-    //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-    //   user: {
-    //     image: <FaRegUserCircle />,
-    //     username: "Nguyen Van C",
-    //     numberphone: "098765432",
-    //     link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-    //   },
-    // },
-    // {
-    //   id: "4",
-    //   type: "traodoi",
-    //   image:
-    //     "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-    //   price: "70.000 - 100.000",
-    //   name: "Tuyển giao lưu 1",
-    //   address:
-    //     "Sân THCS Thanh Xuân Nam - Cuối ngõ 214 Nguyễn Xiển, P. Thanh Xuân Nam, Q. Thanh Xuân, Hà Nội",
-    //   city: "Hà Nội",
-    //   calendarNow:
-    //     "02/07/2024, 19:30 - 19:30",
-    //   calendar:
-    //     "Lặp lại hàng tuần (T3, T5, CN)",
-    //   apply: "3 người (Nam)",
-    //   level: "TBK",
-    //   hirePrice: "80.000",
-    //   description:
-    //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-    //   user: {
-    //     image: <FaRegUserCircle />,
-    //     username: "Nguyen Van A",
-    //     numberphone: "098765432",
-    //     link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-    //   },
-    // },
-    // {
-    //   id: "5",
-    //   type: "sandau",
-    //   image:
-    //     "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-    //   price: "100.000",
-    //   name: "Tuyển giao lưu 2",
-    //   address:
-    //     "Sân THCS Thanh Xuân Nam - Đà Nẵng",
-    //   city: "Đà Nẵng",
-    //   calendarNow:
-    //     "02/07/2024, 19:30 - 19:30",
-    //   calendar:
-    //     "Lặp lại hàng tuần (T3, T5, CN)",
-    //   apply: "1 người (Nữ)",
-    //   level: "TBK",
-    //   hirePrice: "80.000",
-    //   description:
-    //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-    //   user: {
-    //     image: <FaRegUserCircle />,
-    //     username: "Nguyen Van B",
-    //     numberphone: "098765432",
-    //     link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-    //   },
-    // },
-    // {
-    //   id: "6",
-    //   type: "giaoluu",
-    //   image:
-    //     "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-    //   price: "500.000",
-    //   name: "Tuyển giao lưu 3",
-    //   address:
-    //     "Sân THCS Thanh Xuân Nam - Cuối ngõ 214 Nguyễn Xiển, Sài Gòn",
-    //   city: "Sài Gòn",
-    //   calendarNow:
-    //     "02/07/2024, 19:30 - 19:30",
-    //   calendar:
-    //     "Lặp lại hàng tuần (T3, T5, CN)",
-    //   apply: "3 người (Nam)",
-    //   level: "TBK",
-    //   hirePrice: "80.000",
-    //   description:
-    //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-    //   user: {
-    //     image: <FaRegUserCircle />,
-    //     username: "Nguyen Van C",
-    //     numberphone: "098765432",
-    //     link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-    //   },
-    // },
-  ];
-  const handleChange = (value) => {
-    setSelectedCity(value);
+  const [filters, setFilters] =
+    useState({
+      city: undefined,
+      type: undefined,
+      price: undefined,
+      action: undefined,
+    });
+
+  const handleChange = (
+    value,
+    field
+  ) => {
+    const newFilters = {
+      ...filters,
+      [field]: value,
+    };
+    setFilters(newFilters);
+    dispatch(filterProduct(newFilters));
   };
 
-  const filteredData = selectedCity
-    ? data.filter(
-        (item) =>
-          item.city === selectedCity
-      )
-    : data;
+  const handleReset = () => {
+    setFilters({
+      city: undefined,
+      type: undefined,
+      price: undefined,
+      action: undefined,
+    });
+    dispatch(resetProduct());
+  };
 
   return (
-    <div className="d-flex gap-3 pt-4 filter">
+    <div className="d-flex gap-3 pt-4 filter align-items-center">
       <Select
         placeholder="Thành phố"
-        style={{
-          width: "max-content",
-        }}
-        onChange={handleChange}
+        value={filters.city}
+        style={{ width: "max-content" }}
+        onChange={(value) =>
+          handleChange(value, "city")
+        }
         options={[
           {
-            value: "1",
+            value: "Hồ Chí Minh",
             label: "Hồ Chí Minh",
           },
           {
-            value: "2",
+            value: "Hà Nội",
             label: "Hà Nội",
           },
           {
-            value: "3",
+            value: "Tỉnh thành khác",
             label: "Tỉnh thành khác",
           },
         ]}
@@ -220,19 +68,26 @@ const Filter1 = () => {
       />
       <Select
         placeholder="Sản phẩm"
-        style={{
-          width: "max-content",
-        }}
-        onChange={handleChange}
+        value={filters.type}
+        style={{ width: "max-content" }}
+        onChange={(value) =>
+          handleChange(value, "type")
+        }
         options={[
-          { value: "1", label: "Giày" },
-          { value: "2", label: "Vợt" },
           {
-            value: "3",
+            value: "Giày",
+            label: "Giày",
+          },
+          {
+            value: "Vợt",
+            label: "Vợt",
+          },
+          {
+            value: "Quần áo",
             label: "Quần áo",
           },
           {
-            value: "4",
+            value: "Phụ kiện",
             label: "Phụ kiện",
           },
         ]}
@@ -242,10 +97,11 @@ const Filter1 = () => {
       />
       <Select
         placeholder="Khoảng giá"
-        style={{
-          width: "max-content",
-        }}
-        onChange={handleChange}
+        value={filters.price}
+        style={{ width: "max-content" }}
+        onChange={(value) =>
+          handleChange(value, "price")
+        }
         options={[
           {
             value: "1",
@@ -277,26 +133,30 @@ const Filter1 = () => {
       />
       <Select
         placeholder="Tình trạng"
-        style={{
-          width: "max-content",
-        }}
-        onChange={handleChange}
+        value={filters.action}
+        style={{ width: "max-content" }}
+        onChange={(value) =>
+          handleChange(value, "action")
+        }
         options={[
           {
-            value: "1",
+            value: "New 100%",
             label: "New 100%",
           },
           {
-            value: "2",
+            value: "Used 95% - 99%",
             label: "Used 95% - 99%",
           },
-          { value: "3", label: "Cũ" },
+          { value: "Cũ", label: "Cũ" },
         ]}
         dropdownStyle={{
           zIndex: 9999999999,
           borderRadius: "20px",
         }}
       />
+      <Button onClick={handleReset}>
+        Xóa lọc
+      </Button>
     </div>
   );
 };

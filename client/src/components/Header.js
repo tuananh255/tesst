@@ -13,7 +13,6 @@ import {
   Dropdown,
   Space,
   Modal,
-  Form,
   Input,
   Button,
 } from "antd";
@@ -33,35 +32,18 @@ import {
   useDispatch,
   useSelector,
 } from "react-redux";
-import {
-  login,
-  register,
-} from "../features/users/userSlice";
+import { register } from "../features/users/userSlice";
 import Login from "./Login";
-const Header = () => {
+
+const Header = ({ onFilterChange }) => {
+  const location = useLocation();
+  const idslug = location.pathname
+    .split("/")
+    .pop();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userState = useSelector(
     (state) => state.auth.user
-  );
-  const userSchema = Yup.object().shape(
-    {
-      email: Yup.string()
-        .email("Email should be valid")
-        .required("Yêu cầu nhập Email"),
-      name: Yup.string().required(
-        "Yêu cầu nhập tên"
-      ),
-      mobile: Yup.string().required(
-        "Yêu cầu nhập số điện thoại"
-      ),
-      address: Yup.string().required(
-        "Yêu cầu nhập địa chỉ"
-      ),
-      password: Yup.string().required(
-        "Yêu cầu nhập mật khẩu"
-      ),
-    }
   );
   const [cfpassword, setCfpassword] =
     useState("");
@@ -109,6 +91,21 @@ const Header = () => {
           {
             label: (
               <span
+                onClick={() =>
+                  navigate("/mypost")
+                }
+                style={{
+                  display: "block",
+                  width: "100%",
+                }}>
+                Bài đăng
+              </span>
+            ),
+            key: "1",
+          },
+          {
+            label: (
+              <span
                 onClick={() => {
                   sessionStorage.removeItem(
                     "user"
@@ -132,29 +129,15 @@ const Header = () => {
   ] = useState(false);
   const [modalType, setModalType] =
     useState(null);
-
-  const handleMenuClick = (type) => {
-    setModalType(type);
-    setIsModalVisible(true);
-    formik.resetForm();
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    setModalType(null);
-    formik.resetForm();
-  };
-
   const [
     activeComponent,
     setActiveComponent,
-  ] = useState("Filter1");
+  ] = useState("Filter2");
   const [name, setName] =
     useState("Giao lưu");
   const [toggle, setToggle] =
     useState(false);
   const menuRef = useRef(null);
-  const location = useLocation();
 
   const handleClickOutside = (
     event
@@ -182,19 +165,85 @@ const Header = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const savedActiveComponent =
+      localStorage.getItem(
+        "activeComponent"
+      );
+    const savedName =
+      localStorage.getItem(
+        "activeName"
+      );
+    if (
+      savedActiveComponent &&
+      savedName
+    ) {
+      setActiveComponent(
+        savedActiveComponent
+      );
+      setName(savedName);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (idslug === "giaoluu") {
+      setActiveComponent("Filter2");
+      setName("Giao lưu");
+    } else if (idslug === "sandau") {
+      setActiveComponent("Filter3");
+      setName("Sân đấu");
+    } else if (idslug === "traodoi") {
+      setActiveComponent("Filter1");
+      setName("Trao đổi");
+    }
+  }, [idslug]);
+
   const click1 = () => {
-    setActiveComponent("Filter3");
     setName("Giao lưu");
+    setActiveComponent("Filter2");
   };
 
   const click2 = () => {
-    setActiveComponent("Filter2");
+    setActiveComponent("Filter3");
     setName("Sân đấu");
   };
+
   const click3 = () => {
     setActiveComponent("Filter1");
     setName("Trao đổi");
   };
+
+  const handleMenuClick = (type) => {
+    setModalType(type);
+    setIsModalVisible(true);
+    formik.resetForm();
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setModalType(null);
+    formik.resetForm();
+  };
+
+  const userSchema = Yup.object().shape(
+    {
+      email: Yup.string()
+        .email("Email should be valid")
+        .required("Yêu cầu nhập Email"),
+      name: Yup.string().required(
+        "Yêu cầu nhập tên"
+      ),
+      mobile: Yup.string().required(
+        "Yêu cầu nhập số điện thoại"
+      ),
+      address: Yup.string().required(
+        "Yêu cầu nhập địa chỉ"
+      ),
+      password: Yup.string().required(
+        "Yêu cầu nhập mật khẩu"
+      ),
+    }
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -223,6 +272,18 @@ const Header = () => {
       }
     },
   });
+
+  // Effect to save state before component unmounts
+  useEffect(() => {
+    localStorage.setItem(
+      "activeComponent",
+      activeComponent
+    );
+    localStorage.setItem(
+      "activeName",
+      name
+    );
+  }, [activeComponent, name]);
 
   return (
     <div>
@@ -336,7 +397,12 @@ const Header = () => {
                       </span>
                       <Link to="/home/giaoluu">
                         <div
-                          className="d-flex align-items-center gap-4"
+                          className={`d-flex align-items-center gap-4 text-dark ${
+                            idslug ===
+                            "giaoluu"
+                              ? "active"
+                              : ""
+                          }`}
                           style={{
                             border:
                               "1px solid #ccc",
@@ -364,7 +430,12 @@ const Header = () => {
                       </Link>
                       <Link to="/home/sandau">
                         <div
-                          className="d-flex align-items-center gap-4"
+                          className={`d-flex align-items-center gap-4 text-dark ${
+                            idslug ===
+                            "sandau"
+                              ? "active"
+                              : ""
+                          }`}
                           style={{
                             border:
                               "1px solid #ccc",
@@ -391,7 +462,12 @@ const Header = () => {
                       </Link>
                       <Link to="/home/traodoi">
                         <div
-                          className="d-flex align-items-center gap-4"
+                          className={`d-flex align-items-center gap-4 text-dark ${
+                            idslug ===
+                            "traodoi"
+                              ? "active"
+                              : ""
+                          }`}
                           style={{
                             border:
                               "1px solid #ccc",
@@ -440,6 +516,20 @@ const Header = () => {
                         "8px 20px",
                     }}>
                     Đăng tin
+                  </button>
+                </Link>
+              </div>
+              <div>
+                <Link to="/post-product">
+                  <button
+                    className="btn btn-danger fs-5"
+                    style={{
+                      borderRadius:
+                        "50px",
+                      padding:
+                        "8px 20px",
+                    }}>
+                    Đăng sản phẩm
                   </button>
                 </Link>
               </div>
@@ -744,16 +834,28 @@ const Header = () => {
         </div>
 
         {location.pathname !==
-          "/post" && (
-          <>
-            {activeComponent ===
-              "Filter1" && <Filter1 />}
-            {activeComponent ===
-              "Filter2" && <Filter2 />}
-            {activeComponent ===
-              "Filter3" && <Filter3 />}
-          </>
-        )}
+          "/post" &&
+          location.pathname !==
+            "/post-product" && (
+            <>
+              {activeComponent ===
+                "Filter1" && (
+                <Filter1 />
+              )}
+              {activeComponent ===
+                "Filter2" && (
+                <Filter2 />
+              )}
+              {activeComponent ===
+                "Filter3" && (
+                <Filter3
+                  onFilterChange={
+                    onFilterChange
+                  }
+                />
+              )}
+            </>
+          )}
       </div>
     </div>
   );

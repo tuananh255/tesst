@@ -33,7 +33,6 @@ export default function Login({
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
-        // console.log(values);
         dispatch(login(values));
         formik.resetForm();
       } catch (error) {

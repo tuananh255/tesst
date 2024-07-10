@@ -58,7 +58,8 @@ const getsignPost = async (
   try {
     const getPost = await postModel
       .findById(id)
-      .populate("updateBy");
+      .populate("updateBy")
+      .populate("ratings.postedby");
     res.status(200).json({
       success: true,
       message:
@@ -120,30 +121,85 @@ const deletesignPost = async (
   req,
   res
 ) => {
-  // const { _id } = req.params;
-  // try {
-  //   const user =
-  //     await postModel.findByIdAndDelete(
-  //       _id
-  //     );
-  //   res.status(200).json({
-  //     success: true,
-  //     message:
-  //       "delete user successfully !",
-  //   });
-  // } catch (error) {
-  //   console.log(error);
-  //   res.status(500).send({
-  //     success: false,
-  //     message: "delete user error !",
-  //   });
-  // }
+  const { id } = req.params;
+  try {
+    const post =
+      await postModel.findByIdAndDelete(
+        id
+      );
+    res.status(200).json({
+      success: true,
+      message:
+        "delete user successfully !",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "delete user error !",
+    });
+  }
 };
+const filterPost = async (
+  req,
+  res
+) => {};
+const rating = asyncHandle(
+  async (req, res) => {
+    const { _id } = req.user;
+    const { star, comment } = req.body;
 
+    try {
+      // Tìm bài đăng cần được đánh giá
+      const post =
+        await postModel.findById(
+          req.params.id
+        );
+      if (!post) {
+        return res.status(404).send({
+          success: false,
+          message: "Post not found",
+        });
+      }
+
+      // Thêm đánh giá mới vào bài đăng
+      const newRating = {
+        star,
+        comment,
+        postedby: _id,
+      };
+
+      post.ratings.push(newRating);
+
+      // Tính tổng số đánh giá
+      post.totalrating =
+        post.ratings.length;
+
+      // Lưu bài đăng đã cập nhật vào cơ sở dữ liệu
+      await post.save();
+
+      res.status(200).send({
+        success: true,
+        message:
+          "Rating added successfully",
+        post,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({
+        success: false,
+        message: "Error in Rating API",
+        error,
+      });
+    }
+  }
+);
 module.exports = {
   addPost,
   getsignPost,
   deletesignPost,
   updatePost,
   getAllPost,
+  rating,
+  filterPost,
 };

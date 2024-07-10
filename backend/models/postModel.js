@@ -35,6 +35,18 @@ const commentSchema =
 var postSchema = new mongoose.Schema(
   {
     location: {
+      type: Object,
+      require: true,
+    },
+    city: {
+      type: String,
+      require: true,
+    },
+    quan: {
+      type: String,
+      require: true,
+    },
+    san: {
       type: String,
       require: true,
     },

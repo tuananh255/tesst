@@ -11,8 +11,10 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import { FaMapMarkerAlt } from "react-icons/fa";
-import { FaCalendarAlt } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaCalendarAlt,
+} from "react-icons/fa";
 import { BsCalendar2HeartFill } from "react-icons/bs";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
@@ -25,229 +27,74 @@ import {
   useSelector,
 } from "react-redux";
 import { getPost } from "../features/post/postSlice";
+import {
+  options,
+  option4,
+  option5,
+  option6,
+} from "../data/data";
+const formatCurrencyToK = (amount) => {
+  const formatter =
+    new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+
+  // Format the amount
+  let formattedAmount =
+    formatter.format(amount);
+
+  // Replace the default currency symbol with 'K'
+  formattedAmount = formattedAmount =
+    formattedAmount.replace(/\s*₫/, "");
+
+  return formattedAmount;
+};
 const BadmintonDetails = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
+
   useEffect(() => {
     dispatch(getPost(id));
-  }, []);
+  }, [dispatch, id]);
+
   const post = useSelector(
     (state) =>
       state.post.getPost.getPost
   );
-  console.log(post);
-  const [feedBack, setFeedBack] =
-    useState(false);
   const [clickFB, setClickFB] =
     useState(false);
-  const dataFeedback = [
-    {
-      _id: "1",
-      name: "Hoa",
-      rating: 4,
-      numberphone: "1203123123",
-      review:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      userId:
-        "6651a52825cdf87641678c4e",
-      badmintonId: "2",
 
-      __v: 0,
-    },
-    {
-      _id: "2",
-      name: "hoa",
-      rating: 4,
-      numberphone: "123123",
-      review: "tốt",
-      userId:
-        "6651a52825cdf87641678c4e",
-      badmintonId: "2",
-
-      __v: 0,
-    },
-    {
-      _id: "3",
-      name: "sdasd",
-      rating: 3,
-      numberphone: "1",
-      review: "test",
-      userId:
-        "6651a52825cdf87641678c4e",
-      badmintonId: "3",
-
-      __v: 0,
-    },
-    {
-      _id: "4",
-      name: "Hieu",
-      rating: 3,
-      numberphone: "0100111",
-      review: "hello",
-      userId:
-        "6651a52825cdf87641678c4e",
-      badmintonId: "4",
-
-      __v: 0,
-    },
-  ];
-  const data = [
-    {
-      id: "1",
-      image:
-        "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-      price: "70.000 - 100.000",
-      name: "Tuyển giao lưu 1",
-      address:
-        "Sân THCS Thanh Xuân Nam - Cuối ngõ 214 Nguyễn Xiển, P. Thanh Xuân Nam, Q. Thanh Xuân, Hà Nội",
-      calendarNow:
-        "02/07/2024, 19:30 - 19:30",
-      calendar:
-        "Lặp lại hàng tuần (T3, T5, CN)",
-      apply: "3 người (Nam)",
-      level: "TBK",
-      hirePrice: "80.000",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-      user: {
-        image: <FaRegUserCircle />,
-        username: "Nguyen Van A",
-        numberphone: "098765432",
-        link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-      },
-    },
-    {
-      id: "2",
-      image:
-        "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-      price: "100.000",
-      name: "Tuyển giao lưu 2",
-      address:
-        "Sân THCS Thanh Xuân Nam - Đà Nẵng",
-      calendarNow:
-        "02/07/2024, 19:30 - 19:30",
-      calendar:
-        "Lặp lại hàng tuần (T3, T5, CN)",
-      apply: "1 người (Nữ)",
-      level: "TBK",
-      hirePrice: "80.000",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-      user: {
-        image: <FaRegUserCircle />,
-        username: "Nguyen Van B",
-        numberphone: "098765432",
-        link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-      },
-    },
-    {
-      id: "3",
-      image:
-        "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-      price: "500.000",
-      name: "Tuyển giao lưu 3",
-      address:
-        "Sân THCS Thanh Xuân Nam - Cuối ngõ 214 Nguyễn Xiển, Sài Gòn",
-      calendarNow:
-        "02/07/2024, 19:30 - 19:30",
-      calendar:
-        "Lặp lại hàng tuần (T3, T5, CN)",
-      apply: "3 người (Nam)",
-      level: "TBK",
-      hirePrice: "80.000",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-      user: {
-        image: <FaRegUserCircle />,
-        username: "Nguyen Van C",
-        numberphone: "098765432",
-        link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-      },
-    },
-    {
-      id: "4",
-      image:
-        "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-      price: "70.000 - 100.000",
-      name: "Tuyển giao lưu 1",
-      address:
-        "Sân THCS Thanh Xuân Nam - Cuối ngõ 214 Nguyễn Xiển, P. Thanh Xuân Nam, Q. Thanh Xuân, Hà Nội",
-      calendarNow:
-        "02/07/2024, 19:30 - 19:30",
-      calendar:
-        "Lặp lại hàng tuần (T3, T5, CN)",
-      apply: "3 người (Nam)",
-      level: "TBK",
-      hirePrice: "80.000",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-      user: {
-        image: <FaRegUserCircle />,
-        username: "Nguyen Van A",
-        numberphone: "098765432",
-        link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-      },
-    },
-    {
-      id: "5",
-      image:
-        "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-      price: "100.000",
-      name: "Tuyển giao lưu 2",
-      address:
-        "Sân THCS Thanh Xuân Nam - Đà Nẵng",
-      calendarNow:
-        "02/07/2024, 19:30 - 19:30",
-      calendar:
-        "Lặp lại hàng tuần (T3, T5, CN)",
-      apply: "1 người (Nữ)",
-      level: "TBK",
-      hirePrice: "80.000",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-      user: {
-        image: <FaRegUserCircle />,
-        username: "Nguyen Van B",
-        numberphone: "098765432",
-        link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-      },
-    },
-    {
-      id: "6",
-      image:
-        "https://cabasports.vn/wp-content/uploads/2021/02/30.jpg",
-      price: "500.000",
-      name: "Tuyển giao lưu 3",
-      address:
-        "Sân THCS Thanh Xuân Nam - Cuối ngõ 214 Nguyễn Xiển, Sài Gòn",
-      calendarNow:
-        "02/07/2024, 19:30 - 19:30",
-      calendar:
-        "Lặp lại hàng tuần (T3, T5, CN)",
-      apply: "3 người (Nam)",
-      level: "TBK",
-      hirePrice: "80.000",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-      user: {
-        image: <FaRegUserCircle />,
-        username: "Nguyen Van C",
-        numberphone: "098765432",
-        link: "https://docs.google.com/spreadsheets/d/1ybB9nrTB6TEFSFCxYtuFCZaHj1zyHQB2lO2LSNHpwe8/edit?gid=0#gid=0",
-      },
-    },
-  ];
-  const filterData = data.find(
-    (item) => item.id === id
-  );
-  const filterFeedBack =
-    dataFeedback.filter(
-      (fb) => fb.badmintonId === id
+  const getLBV = (value) => {
+    const numericValue = parseInt(
+      value,
+      10
     );
-  const formatTime = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
+    const option = options.find(
+      (option) =>
+        option.value === numericValue
+    );
+    return option
+      ? option.label
+      : value;
   };
+  const getLabelByValue =
+    (options) => (value) => {
+      const option = options.find(
+        (option) =>
+          option.value ===
+          parseInt(value, 10)
+      );
+      return option
+        ? option.label
+        : value;
+    };
+  const getLBVCity =
+    getLabelByValue(option4);
+  const getLBVQuan =
+    getLabelByValue(option5);
+  const getLBVSan =
+    getLabelByValue(option6);
   return (
     <div className="mt-5">
       <Container>
@@ -264,10 +111,10 @@ const BadmintonDetails = () => {
                   }
                   style={{
                     width: "100%",
-                    height: "350px",
+                    objectFit: "cover",
+                    height: "300px",
                     borderRadius:
                       "20px",
-                    objectFit: "cover",
                   }}
                 />
                 <button
@@ -280,10 +127,14 @@ const BadmintonDetails = () => {
                     bottom: "10px",
                     right: "10px",
                   }}>
-                  Giá thuê :
-                  {post?.priceNu +
+                  Giá thuê :{" "}
+                  {formatCurrencyToK(
+                    post?.priceNu
+                  ) +
                     " - " +
-                    post?.priceNam}
+                    formatCurrencyToK(
+                      post?.priceNam
+                    )}
                 </button>
               </div>
               <div className="py-4">
@@ -297,7 +148,17 @@ const BadmintonDetails = () => {
                     }}
                   />
                   <span>
-                    {post?.location}
+                    {getLBVSan(
+                      post?.san
+                    ) +
+                      ", " +
+                      getLBVQuan(
+                        post?.quan
+                      ) +
+                      ", " +
+                      getLBVCity(
+                        post?.city
+                      )}
                   </span>
                 </div>
                 <div className="fs-5 d-flex gap-2 align-items-center">
@@ -336,7 +197,7 @@ const BadmintonDetails = () => {
                     }}
                   />
                   <span>
-                    Cần tuyển :
+                    Cần tuyển :{" "}
                     {post?.countct}
                   </span>
                 </div>
@@ -347,10 +208,14 @@ const BadmintonDetails = () => {
                     }}
                   />
                   <span>
-                    Trình độ :
-                    {post?.minTrinhDo +
-                      " đến " +
-                      post?.maxTrinhDo}
+                    Trình độ:{" "}
+                    {getLBV(
+                      post?.minTrinhDo
+                    )}{" "}
+                    đến{" "}
+                    {getLBV(
+                      post?.maxTrinhDo
+                    )}
                   </span>
                 </div>
                 <div className="fs-5 d-flex gap-2 align-items-center">
@@ -360,10 +225,14 @@ const BadmintonDetails = () => {
                     }}
                   />
                   <span>
-                    Giá thuê :
-                    {post?.priceNu +
+                    Giá thuê :{" "}
+                    {formatCurrencyToK(
+                      post?.priceNu
+                    ) +
                       " - " +
-                      post?.priceNam}
+                      formatCurrencyToK(
+                        post?.priceNam
+                      )}
                   </span>
                 </div>
                 <div>
@@ -394,7 +263,7 @@ const BadmintonDetails = () => {
                 </strong>
                 <div className="d-flex align-items-center gap-3">
                   <span className="fs-2">
-                    ảnh
+                    <FaRegUserCircle />
                     {/* {post?.user.image} */}
                   </span>
                   <span className="fs-4">
@@ -417,8 +286,7 @@ const BadmintonDetails = () => {
                           ?.mobile
                       }
                     </span>
-                    <Link
-                      to={`${filterData?.user.link}`}>
+                    <Link to={`/`}>
                       Link facebook cá
                       nhân
                     </Link>
@@ -447,40 +315,42 @@ const BadmintonDetails = () => {
                 </span>
               ) : (
                 <>
-                  {post?.ratings?.map(
-                    (fback) => {
-                      return (
-                        <div
-                          key={
-                            fback._id
-                          }>
-                          <div className="d-flex flex-col gap-2">
-                            <span className="fw-bold text-yellow-300">
-                              {
-                                fback.name
-                              }
-                            </span>
-                            <div>
-                              <Rating
-                                name="size-small"
-                                defaultValue={
-                                  fback.rating
-                                }
-                                size="small"
-                              />
-                            </div>
-                          </div>
+                  {post?.ratings.map(
+                    (fback) => (
+                      <div
+                        key={fback._id}>
+                        <div className="d-flex flex-col gap-2">
+                          <span className="fw-bold text-yellow-300">
+                            {
+                              fback
+                                .postedby
+                                ?.name
+                            }
+                          </span>
                           <div>
-                            <p>
-                              {
-                                fback.review
+                            <Rating
+                              name="size-small"
+                              defaultValue={
+                                fback.star
                               }
-                            </p>
+                              value={
+                                fback.star
+                              }
+                              size="small"
+                              readOnly
+                            />
                           </div>
-                          <hr />
                         </div>
-                      );
-                    }
+                        <div>
+                          <p>
+                            {
+                              fback.comment
+                            }
+                          </p>
+                        </div>
+                        <hr />
+                      </div>
+                    )
                   )}
                 </>
               )}

@@ -1,5 +1,6 @@
 import React, {
   useEffect,
+  useState,
 } from "react";
 import {
   Container,
@@ -22,6 +23,8 @@ import {
   useDispatch,
   useSelector,
 } from "react-redux";
+import { Modal } from "react-bootstrap";
+
 import {
   delImg,
   resetImages,
@@ -29,7 +32,15 @@ import {
 } from "../features/upload/uploadSlice";
 import { toast } from "react-toastify";
 import { addPost } from "../features/post/postSlice";
-// import { message, Upload } from "antd";
+import {
+  option1,
+  option2,
+  option3,
+  option4,
+  option5,
+  option6,
+  options,
+} from "../data/data";
 const { RangePicker: TimeRangePicker } =
   TimePicker;
 const { TextArea } = Input;
@@ -38,9 +49,16 @@ dayjs.extend(customParseFormat);
 const dateFormat = "YYYY-MM-DD";
 
 let userSchema = Yup.object().shape({
-  location: Yup.string().required(
-    "Yêu cầu nhập địa chỉ"
+  city: Yup.string().required(
+    "Yêu cầu nhập thành phố"
   ),
+  quan: Yup.string().required(
+    "Yêu cầu nhập quận"
+  ),
+  san: Yup.string().required(
+    "Yêu cầu nhập sân"
+  ),
+
   title: Yup.string().required(
     "Yêu cầu nhập tiêu đề"
   ),
@@ -83,6 +101,10 @@ let userSchema = Yup.object().shape({
 
 const Post = () => {
   const dispatch = useDispatch();
+  const [
+    toggleLocation,
+    setToggleLocation,
+  ] = useState(false);
   const imgState = useSelector(
     (state) => state.upload.images
   );
@@ -98,39 +120,16 @@ const Post = () => {
   const currentDayjsDate = dayjs(
     currentDate
   );
-
-  const options = [
-    { value: 1, label: "Yếu" },
-    { value: 2, label: "TBY" },
-    { value: 3, label: "TB-" },
-    { value: 4, label: "TB" },
-    { value: 5, label: "TB+" },
-    { value: 6, label: "TB++" },
-    { value: 7, label: "TBK" },
-    { value: 8, label: "Khá" },
-    {
-      value: 9,
-      label: "Chuyên nghiệp",
-    },
-  ];
-
-  const option1 = [
-    { value: 1, label: "Cả nam và nữ" },
-    { value: 2, label: "Chỉ nam" },
-    { value: 3, label: "Chỉ nữ" },
-  ];
-  const option2 = [
-    { value: 1, label: "Hằng ngày" },
-    { value: 2, label: "Hằng tuần" },
-  ];
-  const option3 = [
-    { value: 1, label: "Trao đổi" },
-    { value: 2, label: "Sân đấu" },
-    { value: 3, label: "Giao lưu" },
-  ];
   const formik = useFormik({
     initialValues: {
-      location: "",
+      location: {
+        city: null,
+        quan: null,
+        san: null,
+      },
+      city: null,
+      quan: null,
+      san: null,
       title: "",
       description: "",
       countct: null,
@@ -169,6 +168,38 @@ const Post = () => {
   useEffect(() => {
     formik.values.images = img;
   }, [img]);
+  const handleClose = () => {
+    setToggleLocation(false);
+    formik.values.city = "";
+    formik.values.quan = "";
+    formik.values.san = "";
+  };
+
+  const getLabelByValue =
+    (options) => (value) => {
+      const option = options.find(
+        (option) =>
+          option.value ===
+          parseInt(value, 10)
+      );
+      return option
+        ? option.label
+        : value;
+    };
+  const getLBVCity =
+    getLabelByValue(option4);
+  const getLBVQuan =
+    getLabelByValue(option5);
+  const getLBVSan =
+    getLabelByValue(option6);
+  const getOptionLabel =
+    (options) => (value) => {
+      const option = options.find(
+        (option) =>
+          option.value === value
+      );
+      return option ? option.label : "";
+    };
   return (
     <Container>
       <div className="border rounded-3 p-4">
@@ -185,10 +216,28 @@ const Post = () => {
                 <div className="d-flex flex-column gap-3">
                   <Input
                     placeholder="Địa chỉ sân"
-                    value={
-                      formik.values
-                        .location
+                    onClick={() =>
+                      setToggleLocation(
+                        true
+                      )
                     }
+                    value={`${
+                      getLBVCity(
+                        formik.values
+                          .city
+                      ) || ""
+                    } - ${
+                      getLBVQuan(
+                        formik.values
+                          .quan
+                      ) || ""
+                    } - ${
+                      getLBVSan(
+                        formik.values
+                          .san
+                      ) || ""
+                    }`}
+                    readOnly
                     onChange={(e) => {
                       formik.handleChange(
                         "location"
@@ -210,6 +259,127 @@ const Post = () => {
                         }
                       </div>
                     )}
+                  {toggleLocation && (
+                    <Modal
+                      show
+                      centered>
+                      <Container className="p-3">
+                        <Row className="mt-4 d-flex flex-column gap-3">
+                          <span className="text-center fs-5 fw-bold">
+                            Chọn địa chỉ
+                          </span>
+                          <Col>
+                            <Select
+                              placeholder="Thành phố"
+                              value={
+                                formik
+                                  .values
+                                  .city
+                              }
+                              onChange={(
+                                value
+                              ) => {
+                                formik.setFieldValue(
+                                  "city",
+                                  value
+                                );
+                              }}
+                              options={
+                                option4
+                              }
+                              style={{
+                                border:
+                                  "none",
+                                width:
+                                  "100%",
+                              }}
+                              dropdownStyle={{
+                                zIndex: 9191919191919,
+                              }}
+                            />
+                          </Col>
+                          <Col>
+                            <Select
+                              placeholder="Quận"
+                              value={
+                                formik
+                                  .values
+                                  .quan
+                              }
+                              onChange={(
+                                value
+                              ) => {
+                                formik.setFieldValue(
+                                  "quan",
+                                  value
+                                );
+                              }}
+                              options={
+                                option5
+                              }
+                              style={{
+                                border:
+                                  "none",
+                                width:
+                                  "100%",
+                              }}
+                              dropdownStyle={{
+                                zIndex: 9191919191919,
+                              }}
+                            />
+                          </Col>
+                          <Col>
+                            <Select
+                              placeholder="Sân"
+                              value={
+                                formik
+                                  .values
+                                  .san
+                              }
+                              onChange={(
+                                value
+                              ) => {
+                                formik.setFieldValue(
+                                  "san",
+                                  value
+                                );
+                              }}
+                              options={
+                                option6
+                              }
+                              style={{
+                                border:
+                                  "none",
+                                width:
+                                  "100%",
+                              }}
+                              dropdownStyle={{
+                                zIndex: 9191919191919,
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                        <div className="d-flex gap-3 justify-content-end mt-3">
+                          <btn
+                            className="btn btn-warning"
+                            onClick={
+                              handleClose
+                            }>
+                            Hủy
+                          </btn>
+                          <btn
+                            className="btn btn-danger"
+                            onClick={() =>
+                              setToggleLocation(
+                                false
+                              )
+                            }>
+                            Đồng ý
+                          </btn>
+                        </div>
+                      </Container>
+                    </Modal>
+                  )}
                   <Input
                     placeholder="Tiêu đề"
                     value={

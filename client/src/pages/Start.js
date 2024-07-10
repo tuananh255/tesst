@@ -10,8 +10,20 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import {
+  useDispatch,
+  useSelector,
+} from "react-redux";
+import { getSlides } from "../features/slide/SlideSlice";
 
 const Start = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSlides());
+  }, []);
+  const slider = useSelector(
+    (state) => state.slide.Slides
+  );
   const [toggle, setToggle] =
     useState(false);
   const [
@@ -89,7 +101,7 @@ const Start = () => {
     <div>
       <div
         style={{
-          backgroundImage: `url(${bgStart})`,
+          backgroundImage: `url(${slider[0]?.images[0]?.url})`,
           height: "100vh",
           width: "100vw",
           backgroundSize: "cover",

@@ -47,6 +47,21 @@ export const getPost = createAsyncThunk(
     }
   }
 );
+export const ratingPost =
+  createAsyncThunk(
+    "post/ratingPost",
+    async (id, thunkApi) => {
+      try {
+        return await postService.ratingPost(
+          id
+        );
+      } catch (error) {
+        return thunkApi.rejectWithValue(
+          error
+        );
+      }
+    }
+  );
 export const resetState = createAction(
   "Reset_all"
 );
@@ -84,6 +99,29 @@ export const authSlice = createSlice({
       )
       .addCase(
         addPost.rejected,
+        (state, action) => {
+          state.isLoading = false;
+          state.isError = true;
+          state.isSuccess = false;
+          state.message = action.error;
+        }
+      )
+      .addCase(
+        ratingPost.pending,
+        (state) => {
+          state.isLoading = true;
+        }
+      )
+      .addCase(
+        ratingPost.fulfilled,
+        (state, action) => {
+          state.isLoading = false;
+          state.isError = false;
+          state.isSuccess = true;
+        }
+      )
+      .addCase(
+        ratingPost.rejected,
         (state, action) => {
           state.isLoading = false;
           state.isError = true;

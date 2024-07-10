@@ -25,7 +25,7 @@
 }
 .error {
   font-size: 12px;
-  /* margin-top: 4px; */
+  margin-top: 4px;
   font-weight: 600;
   color: red;
   padding: 0 12px;
@@ -37,7 +37,12 @@
   padding: 20px 0;
   /* height: 100px; */
 }
-  .ant-picker.ant-picker-range.ant-picker-outlined.css-dev-only-do-not-override-m4timi.form-control {
-    display: flex !important;
-    /* align-items: end !important ; */
-  }
+.ant-picker.ant-picker-range.ant-picker-outlined.css-dev-only-do-not-override-m4timi.form-control {
+  display: flex !important;
+  /* align-items: end !important ; */
+}
+.active{
+    --tw-border-opacity: 1;
+    border-color: rgb(245 0 47 / var(--tw-border-opacity)) !important;
+    background-color: rgba(245, 0, 47, .05) !important;
+}

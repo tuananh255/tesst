@@ -30,8 +30,20 @@ const getPost = async (id) => {
     return res.data;
   }
 };
+const ratingPost = async (id) => {
+  const res = await axios.post(
+    `${base_url}post/rating-post/${id.id}`,
+    id,
+    config
+  );
+  if (res.data) {
+    return res.data;
+  }
+  console.log("id ", id);
+};
 export const postService = {
   addPost,
   getAllPost,
+  ratingPost,
   getPost,
 };
